@@ -1,0 +1,9 @@
+.ant-picker-dropdown .ant-picker-time-panel .ant-picker-content {
+  height: 150px !important;
+}
+.ant-picker-datetime-panel {
+  display: block !important;
+}
+body {
+  background-color: #fff !important;
+}
