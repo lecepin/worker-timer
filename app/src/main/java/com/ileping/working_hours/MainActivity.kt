@@ -15,6 +15,8 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.ileping.working_hours.SplashActivity
+import android.webkit.JavascriptInterface
+import android.net.Uri
 
 class MainActivity : AppCompatActivity() {
     private lateinit var webView: WebView
@@ -23,6 +25,27 @@ class MainActivity : AppCompatActivity() {
     private val tag = this::class.simpleName
     private var isFromSplash = false
     private var isInBackground = false
+
+    inner class WebAppInterface {
+        @JavascriptInterface
+        fun finishApp() {
+            runOnUiThread {
+                finish()
+            }
+        }
+
+        @JavascriptInterface
+        fun openBrowser(url: String) {
+            runOnUiThread {
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(this@MainActivity, "无法打开浏览器", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +68,8 @@ class MainActivity : AppCompatActivity() {
             }
             webViewClient = WebViewClient()
             webChromeClient = WebChromeClient()
+
+            addJavascriptInterface(WebAppInterface(), "Android")
 
             loadUrl("file:///android_asset/index.html")
         }
