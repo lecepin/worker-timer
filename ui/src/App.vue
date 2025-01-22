@@ -120,6 +120,9 @@
       placeholder="请输入要求的工作时长"
       v-model:value="qualifiedTimeInput"
     />
+    <div class="setting-item">
+      <a @click="openPrivacyPolicy" class="privacy-link">《隐私政策》</a>
+    </div>
   </a-modal>
 </template>
 <script lang="ts" setup>
@@ -223,6 +226,14 @@ const getAllDays = (yearMonth: string): Dayjs[] => {
 
 const getAllDayByDate = (date: Dayjs) => {
   return allDays.value.find((v) => v.date.isSame(date, "day"));
+};
+
+const openPrivacyPolicy = () => {
+  if (window.Android) {
+    window.Android.openBrowser("https://apis.leping.fun/pri/worker-timer.html");
+  } else {
+    window.open("https://apis.leping.fun/pri/worker-timer.html", "_system");
+  }
 };
 
 onMounted(() => {
@@ -346,5 +357,23 @@ watch(
 }
 :deep(*) {
   user-select: none;
+}
+
+.drawer-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.privacy-link {
+  color: #1890ff;
+  cursor: pointer;
+}
+
+.privacy-link:hover {
+  text-decoration: underline;
+}
+
+.setting-item {
+  margin-top: 16px;
 }
 </style>
